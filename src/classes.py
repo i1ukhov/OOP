@@ -14,7 +14,12 @@ class Category:
         Category.unique_products_quantity += len(products)
 
     def get_products(self):  # геттер
+        """Геттер для получения информации"""
         return [f'{product.name}, {product.price} руб. Остаток: {product.quantity} шт.' for product in self.__products]
+
+    def get_all_products(self):
+        """Геттер для продуктов"""
+        return self.__products
 
 
 class Product:
@@ -30,8 +35,26 @@ class Product:
         self.price = price
         self.quantity = quantity
 
+    def get_price(self):
+        """Геттер для получения цены"""
+        return self.price
+
+    def set_price(self, new_price):
+        """Сеттер для задания новой цены"""
+        if new_price <= 0:
+            print("Введена некорректная цена")
+        else:
+            if new_price < self.price:
+                user_answer = input("Вы хотите снизить цену? 'y' - да, 'n' - нет\n")
+                if user_answer == 'y':
+                    self.price = new_price
+                    print("Операция отменена")
+            else:
+                self.price = new_price
+
     @staticmethod
     def make_product(name, description, price, quantity, products_list=None):
+        """Метод для создания экземпляров класса Product"""
         if products_list is None:
             return Product(name, description, price, quantity)
         else:

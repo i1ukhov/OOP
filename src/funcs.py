@@ -40,7 +40,11 @@ print(Category.unique_products_quantity)
 print(upload_func()[0][0].get_products())
 print([p.name for p in upload_func()[1]])
 prod_list = upload_func()[1]
+some_prod = prod_list[0]
 print(prod_list)
 print(Product.make_product('Iphone 15', 'vintage iphone', 220000, 2, prod_list).quantity)
 print(Product.make_product('Iphone 15', 'vintage iphone', 220000, 2, prod_list).price)
 print(Product.make_product('Iphone 5', 'vintage iphone', 15000, 44, prod_list).quantity)
+print(some_prod.get_price())
+print(some_prod.set_price(200000))
+print(some_prod.get_price())
