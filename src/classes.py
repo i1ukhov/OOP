@@ -9,9 +9,12 @@ class Category:
     def __init__(self, name, description, products):
         self.name = name
         self.description = description
-        self.products = products
+        self.__products = products
         Category.total_categories_quantity += 1
-        Category.unique_products_quantity += len(self.products)
+        Category.unique_products_quantity += len(products)
+
+    def get_products(self): # геттер
+        return [f'{product.name}, {product.price} руб. Остаток: {product.quantity} шт.' for product in self.__products]
 
 
 class Product:

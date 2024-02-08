@@ -37,3 +37,4 @@ def upload_func():
 print(upload_func())
 print(Category.total_categories_quantity)
 print(Category.unique_products_quantity)
+print(upload_func()[0][0].get_products())
