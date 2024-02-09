@@ -32,13 +32,12 @@ def test_product_init(product_iphone):
 
 
 def test_get_price(product_iphone):
-    assert product_iphone.get_price() == 99999.44
+    assert product_iphone.get_price == 99999.44
 
 
 def test_set_price(product_iphone):
-    assert product_iphone.set_price(-10) == None
-    product_iphone.set_price(100000)
-    assert product_iphone.get_price() == 100000
+    product_iphone.get_price = 100000
+    assert product_iphone.get_price == 100000
 
 
 def test_make_product_just():

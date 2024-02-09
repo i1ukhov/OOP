@@ -13,6 +13,11 @@ class Category:
         Category.total_categories_quantity += 1
         Category.unique_products_quantity += len(products)
 
+    def add_product(self, product):
+        """Метод добавляет товары в атрибут товаров"""
+        self.__products.append(product)
+
+    @property
     def get_products(self):  # геттер
         """Геттер для получения информации"""
         return [f'{product.name}, {product.price} руб. Остаток: {product.quantity} шт.' for product in self.__products]
@@ -35,11 +40,13 @@ class Product:
         self.price = price
         self.quantity = quantity
 
+    @property
     def get_price(self):
         """Геттер для получения цены"""
         return self.price
 
-    def set_price(self, new_price):
+    @get_price.setter
+    def get_price(self, new_price):
         """Сеттер для задания новой цены"""
         if new_price <= 0:
             print("Введена некорректная цена")
@@ -52,15 +59,15 @@ class Product:
             else:
                 self.price = new_price
 
-    @staticmethod
-    def make_product(name, description, price, quantity, products_list=None):
+    @classmethod
+    def make_product(cls, name, description, price, quantity, products_list=None):
         """Метод для создания экземпляров класса Product"""
         if products_list is None:
-            return Product(name, description, price, quantity)
+            return cls(name, description, price, quantity)
         else:
             for product in products_list:
                 if product.name == name:
                     new_quantity = int(product.quantity) + quantity
                     new_price = max(price, product.price)
-                    return Product(name, description, new_price, new_quantity)
-            return Product(name, description, price, quantity)
+                    return cls(name, description, new_price, new_quantity)
+            return cls(name, description, price, quantity)
