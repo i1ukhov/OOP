@@ -54,3 +54,6 @@ print(len(a.get_all_products()))
 print(Product('Poco', 'boom', 10000, 2))
 for c in upload_func()[0]:
     print(c)
+a = Product('a', '', 100, 10)
+b = Product('b', '', 200, 2)
+print(a+b)
