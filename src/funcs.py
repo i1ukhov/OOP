@@ -1,6 +1,6 @@
 import json
 import os
-from classes import Category, Product
+from classes import Category, Product, CategoryItems
 
 
 def read_file():
@@ -51,3 +51,11 @@ print(some_prod.get_price)
 a = Category('f', 'f', [1, 2, 3])
 a.add_product(some_prod)
 print(len(a.get_all_products()))
+print(Product('Poco', 'boom', 10000, 2))
+for c in upload_func()[0]:
+    print(c)
+a = Product('a', '', 100, 10)
+b = Product('b', '', 200, 2)
+print(a+b)
+for i in CategoryItems(upload_func()[0][0])():
+    print(i)

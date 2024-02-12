@@ -13,6 +13,18 @@ class Category:
         Category.total_categories_quantity += 1
         Category.unique_products_quantity += len(products)
 
+    def __repr__(self):
+        return f'{self.__class__.__name__}({self.name}, {self.description}, {self.__products})'
+
+    def __str__(self):
+        return f'{self.name}, количество продуктов: {len(self)} шт.'
+
+    def __len__(self):
+        total = 0
+        for product in self.get_all_products():
+            total += int(product.quantity)
+        return total
+
     def add_product(self, product):
         """Метод добавляет товары в атрибут товаров"""
         self.__products.append(product)
@@ -39,6 +51,15 @@ class Product:
         self.description = description
         self.price = price
         self.quantity = quantity
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}({self.name}, {self.description}, {self.price}. {self.quantity})'
+
+    def __str__(self):
+        return f'{self.name}, {self.price} руб. Остаток: {self.quantity} шт.'
+
+    def __add__(self, other):
+        return self.price * self.quantity + other.price * other.quantity
 
     @property
     def get_price(self):
@@ -71,3 +92,13 @@ class Product:
                     new_price = max(price, product.price)
                     return cls(name, description, new_price, new_quantity)
             return cls(name, description, price, quantity)
+
+
+class CategoryItems:
+
+    """Callable класс, который возвращает список товаров в переданной ему категории"""
+    def __init__(self, category):
+        self.category = category
+
+    def __call__(self, *args, **kwargs):
+        return self.category.get_all_products()
