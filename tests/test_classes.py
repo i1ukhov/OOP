@@ -1,5 +1,5 @@
 import pytest
-from src.classes import Category, Product
+from src.classes import Category, Product, CategoryItems
 
 
 @pytest.fixture
@@ -48,3 +48,27 @@ def test_make_product_additional():
     some_obj_list = [Product('iPhone XS', 'this is iPhone', 99_999.44, 100)]
     assert Product.make_product('iPhone XS', 'blah-blah-blah', 999999, 900, some_obj_list).price == 999999
     assert Product.make_product('iPhone XS', 'blah-blah-blah', 999999, 900, some_obj_list).quantity == 1000
+
+
+def test_products_addition():
+    a = Product('a', '', 100, 10)
+    b = Product('b', '', 200, 2)
+    assert a + b == 1400
+
+
+@pytest.fixture
+def test_category():
+    return Category("Смартфоны", " ",
+                    [Product("Samsung Galaxy C23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5),
+                     Product("Iphone 15", "512GB, Gray space", 210000.0, 8),
+                     Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)])
+
+
+def test_category_len(test_category):
+    assert len(test_category) == 27
+
+
+def test_callable_func(test_category):
+    a = CategoryItems(test_category)
+    assert type(a()) == list
+    assert len(a()) == 3

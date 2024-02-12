@@ -92,3 +92,13 @@ class Product:
                     new_price = max(price, product.price)
                     return cls(name, description, new_price, new_quantity)
             return cls(name, description, price, quantity)
+
+
+class CategoryItems:
+
+    """Callable класс, который возвращает список товаров в переданной ему категории"""
+    def __init__(self, category):
+        self.category = category
+
+    def __call__(self, *args, **kwargs):
+        return self.category.get_all_products()
