@@ -96,9 +96,26 @@ class Product:
 
 class CategoryItems:
 
-    """Callable класс, который возвращает список товаров в переданной ему категории"""
+    """Класс, который принимает на вход категорию и возвращает итератор"""
     def __init__(self, category):
-        self.category = category
+        """Инициализация итератора"""
+        if isinstance(category, Category):
+            iterable = category.get_all_products()
+            self.products = iterable
+            self.start = -1
+        else:
+            raise TypeError("Передан не объект класса Категория")
 
-    def __call__(self, *args, **kwargs):
-        return self.category.get_all_products()
+    def __iter__(self):
+        """Возвращает итератор."""
+        return self
+
+    def __next__(self):
+        """
+        Возвращает последующий продукт Категории
+        """
+        if self.start + 1 < len(self.products):
+            self.start += 1
+            return self.products[self.start]
+        else:
+            raise StopIteration

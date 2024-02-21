@@ -68,7 +68,10 @@ def test_category_len(test_category):
     assert len(test_category) == 27
 
 
-def test_callable_func(test_category):
-    a = CategoryItems(test_category)
-    assert type(a()) == list
-    assert len(a()) == 3
+def test_category_items(test_category):
+    test_obj = test_category
+    assert (len(list(CategoryItems(test_obj)))) == 3
+    new_obj = CategoryItems(test_obj)
+    assert next(new_obj).name == 'Samsung Galaxy C23 Ultra'
+    assert next(new_obj).name == 'Iphone 15'
+    assert next(new_obj).name == 'Xiaomi Redmi Note 11'

@@ -57,5 +57,5 @@ for c in upload_func()[0]:
 a = Product('a', '', 100, 10)
 b = Product('b', '', 200, 2)
 print(a+b)
-for i in CategoryItems(upload_func()[0][0])():
+for i in CategoryItems(upload_func()[0][0]):
     print(i)
