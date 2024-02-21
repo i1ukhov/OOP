@@ -1,6 +1,6 @@
 import json
 import os
-from classes import Category, Product, CategoryItems
+from classes import Category, Product, CategoryItems, Smartphone, Grass
 
 
 def read_file():
@@ -56,6 +56,13 @@ for c in upload_func()[0]:
     print(c)
 a = Product('a', '', 100, 10)
 b = Product('b', '', 200, 2)
-print(a+b)
-for i in CategoryItems(upload_func()[0][0])():
+print(a + b)
+for i in CategoryItems(upload_func()[0][0]):
     print(i)
+
+grass1 = Grass('t1', '-', 100, 2, 'RUS', 12, 'green')
+grass2 = Grass('t2', '-', 50, 4, 'USA', 20, 'greenest green')
+smartphone1 = Smartphone('t1', '-', 10000, 1, 60, '1', 256, 'green')
+smartphone2 = Smartphone('t1', '-', 20000, 5, 120, '1', 512, 'red')
+
+print(grass1 + grass2)  # 400

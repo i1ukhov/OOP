@@ -1,5 +1,5 @@
 import pytest
-from src.classes import Category, Product, CategoryItems
+from src.classes import Category, Product, CategoryItems, Smartphone, Grass
 
 
 @pytest.fixture
@@ -68,7 +68,41 @@ def test_category_len(test_category):
     assert len(test_category) == 27
 
 
-def test_callable_func(test_category):
-    a = CategoryItems(test_category)
-    assert type(a()) == list
-    assert len(a()) == 3
+def test_category_items(test_category):
+    test_obj = test_category
+    assert (len(list(CategoryItems(test_obj)))) == 3
+    new_obj = CategoryItems(test_obj)
+    assert next(new_obj).name == 'Samsung Galaxy C23 Ultra'
+    assert next(new_obj).name == 'Iphone 15'
+    assert next(new_obj).name == 'Xiaomi Redmi Note 11'
+
+
+@pytest.fixture
+def test_some_products():
+    grass1 = Grass('t1', '-', 100, 2, 'RUS', 12, 'green')
+    grass2 = Grass('t2', '-', 50, 4, 'USA', 20, 'greenest green')
+    smartphone1 = Smartphone('t1', '-', 10000, 1, 60, '1', 256, 'green')
+    smartphone2 = Smartphone('t1', '-', 20000, 5, 120, '1', 512, 'red')
+    obj_list = [grass1, grass2, smartphone1, smartphone2]
+    return obj_list
+
+
+def test_adding_different_products(test_some_products):
+    objects = test_some_products
+    assert objects[0] + objects[1] == 400  # cкладываем траву с травой =)
+    with pytest.raises(TypeError) as exc_info:
+        objects[0] + objects[2]  # cкладываем траву со смартфоном xD
+    exception_raised = exc_info.type
+    assert exception_raised == TypeError
+
+
+def test_adding_some_prod(product_iphone, category_smartphones):
+    assert len(category_smartphones.get_all_products()) == 3
+    category_smartphones.add_product(product_iphone)
+    assert len(category_smartphones.get_all_products()) == 4
+    with pytest.raises(TypeError) as error:
+        category_smartphones.add_product('Айфон')  # добавляем в категорию не продукт
+    exception_raised = error.type
+    assert exception_raised == TypeError
+    category_smartphones.add_product(Grass('f', 'f', 1, 1, 'ru', 1, 'rgb'))
+    assert len(category_smartphones.get_all_products()) == 5

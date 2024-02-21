@@ -27,7 +27,10 @@ class Category:
 
     def add_product(self, product):
         """Метод добавляет товары в атрибут товаров"""
-        self.__products.append(product)
+        if isinstance(product, Product):
+            self.__products.append(product)
+        else:
+            raise TypeError("Добавлять можно только Продукт")
 
     @property
     def get_products(self):  # геттер
@@ -43,23 +46,28 @@ class Product:
     """Этот класс соответствует товарам"""
     name: str
     description: str
+    color: str or None
     price: int or float
     quantity: int
 
-    def __init__(self, name, description, price, quantity):
+    def __init__(self, name, description, price, quantity, color=None):
         self.name = name
         self.description = description
         self.price = price
         self.quantity = quantity
+        self.color = color
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self.name}, {self.description}, {self.price}. {self.quantity})'
+        return f'{self.__class__.__name__}({self.name}, {self.description}, {self.price}, {self.quantity})'
 
     def __str__(self):
         return f'{self.name}, {self.price} руб. Остаток: {self.quantity} шт.'
 
     def __add__(self, other):
-        return self.price * self.quantity + other.price * other.quantity
+        if type(self) == type(other):
+            return self.price * self.quantity + other.price * other.quantity
+
+        raise TypeError("Складывать можно только объекты одного типа")
 
     @property
     def get_price(self):
@@ -95,10 +103,53 @@ class Product:
 
 
 class CategoryItems:
+    """Класс, который принимает на вход категорию и возвращает итератор"""
 
-    """Callable класс, который возвращает список товаров в переданной ему категории"""
     def __init__(self, category):
-        self.category = category
+        """Инициализация итератора"""
+        if isinstance(category, Category):
+            iterable = category.get_all_products()
+            self.products = iterable
+            self.start = -1
+        else:
+            raise TypeError("Передан не объект класса Категория")
 
-    def __call__(self, *args, **kwargs):
-        return self.category.get_all_products()
+    def __iter__(self):
+        """Возвращает итератор."""
+        return self
+
+    def __next__(self):
+        """
+        Возвращает последующий продукт Категории
+        """
+        if self.start + 1 < len(self.products):
+            self.start += 1
+            return self.products[self.start]
+        else:
+            raise StopIteration
+
+
+class Smartphone(Product):
+    """Класс Смартфоны, наследуемый от класса Продукт"""
+    performance: float  # производительность, Гц
+    model: str  # модель
+    memory: int or float  # объём памяти, Гб
+
+    def __init__(self, name, description, price, quantity, performance, model, memory, color):
+        super().__init__(name, description, price, quantity)
+        self.performance = performance
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class Grass(Product):
+    """Класс Газонная трава, наследуемый от класса Продукт"""
+    producing_country: str  # страна-производитель
+    germination_period: int  # срок прорастания, дней
+
+    def __init__(self, name, description, price, quantity, producing_country, germination_period, color):
+        super().__init__(name, description, price, quantity)
+        self.producing_country = producing_country
+        self.germination_period = germination_period
+        self.color = color
