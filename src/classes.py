@@ -43,17 +43,19 @@ class Product:
     """Этот класс соответствует товарам"""
     name: str
     description: str
+    color: str or None
     price: int or float
     quantity: int
 
-    def __init__(self, name, description, price, quantity):
+    def __init__(self, name, description, price, quantity, color=None):
         self.name = name
         self.description = description
         self.price = price
         self.quantity = quantity
+        self.color = color
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self.name}, {self.description}, {self.price}. {self.quantity})'
+        return f'{self.__class__.__name__}({self.name}, {self.description}, {self.price}, {self.quantity})'
 
     def __str__(self):
         return f'{self.name}, {self.price} руб. Остаток: {self.quantity} шт.'
@@ -95,8 +97,8 @@ class Product:
 
 
 class CategoryItems:
-
     """Класс, который принимает на вход категорию и возвращает итератор"""
+
     def __init__(self, category):
         """Инициализация итератора"""
         if isinstance(category, Category):
@@ -119,3 +121,29 @@ class CategoryItems:
             return self.products[self.start]
         else:
             raise StopIteration
+
+
+class Smartphone(Product):
+    """Класс Смартфоны, наследуемый от класса Продукт"""
+    performance: float  # производительность, Гц
+    model: str  # модель
+    memory: int or float  # объём памяти, Гб
+
+    def __init__(self, name, description, price, quantity, performance, model, memory, color):
+        super().__init__(name, description, price, quantity)
+        self.performance = performance
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class Grass(Product):
+    """Класс Газонная трава, наследуемый от класса Продукт"""
+    producing_country: str  # страна-производитель
+    germination_period: int  # срок прорастания, дней
+
+    def __init__(self, name, description, price, quantity, producing_country, germination_period, color):
+        super().__init__(name, description, price, quantity)
+        self.producing_country = producing_country
+        self.germination_period = germination_period
+        self.color = color
