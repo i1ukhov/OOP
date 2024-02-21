@@ -27,7 +27,10 @@ class Category:
 
     def add_product(self, product):
         """Метод добавляет товары в атрибут товаров"""
-        self.__products.append(product)
+        if isinstance(product, Product):
+            self.__products.append(product)
+        else:
+            raise TypeError("Добавлять можно только Продукт")
 
     @property
     def get_products(self):  # геттер

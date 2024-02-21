@@ -91,6 +91,18 @@ def test_adding_different_products(test_some_products):
     objects = test_some_products
     assert objects[0] + objects[1] == 400  # cкладываем траву с травой =)
     with pytest.raises(TypeError) as exc_info:
-        objects[0] + objects[2]   # cкладываем траву со смартфоном xD
+        objects[0] + objects[2]  # cкладываем траву со смартфоном xD
     exception_raised = exc_info.type
     assert exception_raised == TypeError
+
+
+def test_adding_some_prod(product_iphone, category_smartphones):
+    assert len(category_smartphones.get_all_products()) == 3
+    category_smartphones.add_product(product_iphone)
+    assert len(category_smartphones.get_all_products()) == 4
+    with pytest.raises(TypeError) as error:
+        category_smartphones.add_product('Айфон')  # добавляем в категорию не продукт
+    exception_raised = error.type
+    assert exception_raised == TypeError
+    category_smartphones.add_product(Grass('f', 'f', 1, 1, 'ru', 1, 'rgb'))
+    assert len(category_smartphones.get_all_products()) == 5
