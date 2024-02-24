@@ -1,4 +1,61 @@
-class Category:
+from abc import ABC, abstractmethod
+
+
+class AbstractCategory(ABC):
+    """Абстрактный класс для макета Категории и Заказа"""
+
+    @abstractmethod
+    def __init__(self):
+        super().__init__()
+
+    @abstractmethod
+    def __repr__(self):
+        pass
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+    @abstractmethod
+    def __len__(self):
+        pass
+
+
+class AbstractProduct(ABC):
+    """Абстрактный класс Продукта"""
+
+    @abstractmethod
+    def __init__(self):
+        super().__init__()
+
+    @abstractmethod
+    def __repr__(self):
+        pass
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+    @abstractmethod
+    def __add__(self, other):
+        pass
+
+
+class Mixin:
+    """Миксин, вызывающий __repr__"""
+
+    def __init__(self):
+        self.info()
+        print(self.__repr__(), '\n')
+
+    def info(self):
+        print(f'Создан экземпляр класса {self.__class__.__name__}, со следующими атрибутами:')
+        for k, v in self.__dict__.items():
+            print(f"({k}: {v})", end=', ')
+        print()
+
+
+class Category(AbstractCategory, Mixin):
     """"Этот класс содержит в себе категории продуктов"""
     name: str
     description: str
@@ -12,6 +69,7 @@ class Category:
         self.__products = products
         Category.total_categories_quantity += 1
         Category.unique_products_quantity += len(products)
+        super().__init__()
 
     def __repr__(self):
         return f'{self.__class__.__name__}({self.name}, {self.description}, {self.__products})'
@@ -42,7 +100,7 @@ class Category:
         return self.__products
 
 
-class Product:
+class Product(AbstractProduct, Mixin):
     """Этот класс соответствует товарам"""
     name: str
     description: str
@@ -56,6 +114,7 @@ class Product:
         self.price = price
         self.quantity = quantity
         self.color = color
+        super().__init__()
 
     def __repr__(self):
         return f'{self.__class__.__name__}({self.name}, {self.description}, {self.price}, {self.quantity})'
@@ -129,7 +188,7 @@ class CategoryItems:
             raise StopIteration
 
 
-class Smartphone(Product):
+class Smartphone(Product, Mixin):
     """Класс Смартфоны, наследуемый от класса Продукт"""
     performance: float  # производительность, Гц
     model: str  # модель
@@ -143,7 +202,7 @@ class Smartphone(Product):
         self.color = color
 
 
-class Grass(Product):
+class Grass(Product, Mixin):
     """Класс Газонная трава, наследуемый от класса Продукт"""
     producing_country: str  # страна-производитель
     germination_period: int  # срок прорастания, дней
@@ -153,3 +212,29 @@ class Grass(Product):
         self.producing_country = producing_country
         self.germination_period = germination_period
         self.color = color
+
+
+class Order(AbstractCategory, Mixin):
+    """Класс Заказа. Содержит в себе продукт, количество и стоимость"""
+
+    def __init__(self, product):
+        if isinstance(product, Product):
+            self.product = product
+            self.quantity = product.quantity
+            self.name = self.product.name
+            super().__init__()
+        else:
+            raise TypeError('Был передан не Продукт')
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}({self.product}, {self.name}, {self.quantity}, {self.total_price})'
+
+    def __str__(self):
+        return f'{self.name} в количестве {self.quantity} шт. Итоговая цена: {self.total_price} руб.'
+
+    def __len__(self):
+        return self.quantity
+
+    @property
+    def total_price(self):
+        return self.quantity * self.product.price
