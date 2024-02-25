@@ -1,6 +1,6 @@
 import json
 import os
-from classes import Category, Product, CategoryItems, Smartphone, Grass
+from classes import Category, Product, CategoryItems, Smartphone, Grass, Order
 
 
 def read_file():
@@ -34,35 +34,47 @@ def upload_func():
     return categories_list, products_list
 
 
-print(upload_func())
-print(Category.total_categories_quantity)
-print(Category.unique_products_quantity)
-print(upload_func()[0][0].get_products)
-print([p.name for p in upload_func()[1]])
-prod_list = upload_func()[1]
-some_prod = prod_list[0]
-print(prod_list)
-print(Product.make_product('Iphone 15', 'vintage iphone', 220000, 2, prod_list).quantity)
-print(Product.make_product('Iphone 15', 'vintage iphone', 220000, 2, prod_list).price)
-print(Product.make_product('Iphone 5', 'vintage iphone', 15000, 44, prod_list).quantity)
-print(some_prod.get_price)
-some_prod.get_price = 200000
-print(some_prod.get_price)
-a = Category('f', 'f', [1, 2, 3])
-a.add_product(some_prod)
-print(len(a.get_all_products()))
-print(Product('Poco', 'boom', 10000, 2))
-for c in upload_func()[0]:
-    print(c)
-a = Product('a', '', 100, 10)
-b = Product('b', '', 200, 2)
-print(a + b)
-for i in CategoryItems(upload_func()[0][0]):
-    print(i)
-
+# print(upload_func())
+# print(Category.total_categories_quantity)
+# print(Category.unique_products_quantity)
+# print(upload_func()[0][0].get_products)
+# print([p.name for p in upload_func()[1]])
+# prod_list = upload_func()[1]
+# some_prod = prod_list[0]
+# print(prod_list)
+# print(Product.make_product('Iphone 15', 'vintage iphone', 220000, 2, prod_list).quantity)
+# print(Product.make_product('Iphone 15', 'vintage iphone', 220000, 2, prod_list).price)
+# print(Product.make_product('Iphone 5', 'vintage iphone', 15000, 44, prod_list).quantity)
+# print(some_prod.get_price)
+# some_prod.get_price = 200000
+# print(some_prod.get_price)
+# a = Category('f', 'f', [1, 2, 3])
+# a.add_product(some_prod)
+# print(len(a.get_all_products()))
+# print(Product('Poco', 'boom', 10000, 2))
+# for c in upload_func()[0]:
+#     print(c)
+# a = Product('a', '', 100, 10)
+# b = Product('b', '', 200, 2)
+# print(a + b)
+# for i in CategoryItems(upload_func()[0][0]):
+#     print(i)
+#
 grass1 = Grass('t1', '-', 100, 2, 'RUS', 12, 'green')
 grass2 = Grass('t2', '-', 50, 4, 'USA', 20, 'greenest green')
 smartphone1 = Smartphone('t1', '-', 10000, 1, 60, '1', 256, 'green')
 smartphone2 = Smartphone('t1', '-', 20000, 5, 120, '1', 512, 'red')
 
-print(grass1 + grass2)  # 400
+# print(grass1 + grass2)  # 400
+
+print(Product.__mro__)
+print(Category.__mro__)
+print(Smartphone.__mro__)
+print(Grass.__mro__)
+
+order1 = Order(grass1)
+print(order1.total_price)
+print(order1.name)
+print(order1.quantity)
+print(order1.__repr__())
+print(smartphone1.__repr__())
