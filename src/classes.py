@@ -6,7 +6,7 @@ class AbstractCategory(ABC):
 
     @abstractmethod
     def __init__(self):
-        super().__init__()
+        pass
 
     @abstractmethod
     def __repr__(self):
@@ -26,7 +26,7 @@ class AbstractProduct(ABC):
 
     @abstractmethod
     def __init__(self):
-        super().__init__()
+        pass
 
     @abstractmethod
     def __repr__(self):
@@ -44,18 +44,14 @@ class AbstractProduct(ABC):
 class Mixin:
     """Миксин, вызывающий __repr__"""
 
-    def __init__(self):
-        self.info()
-        print(self.__repr__(), '\n')
-
-    def info(self):
-        print(f'Создан экземпляр класса {self.__class__.__name__}, со следующими атрибутами:')
+    def __repr__(self):
+        s = f'Создан экземпляр класса {self.__class__.__name__} со следующими атрибутами: '
         for k, v in self.__dict__.items():
-            print(f"({k}: {v})", end=', ')
-        print()
+            s += f"({k}: {v}), "
+        return s
 
 
-class Category(AbstractCategory, Mixin):
+class Category(Mixin, AbstractCategory):
     """"Этот класс содержит в себе категории продуктов"""
     name: str
     description: str
@@ -69,10 +65,9 @@ class Category(AbstractCategory, Mixin):
         self.__products = products
         Category.total_categories_quantity += 1
         Category.unique_products_quantity += len(products)
-        super().__init__()
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self.name}, {self.description}, {self.__products})'
+        return super().__repr__()
 
     def __str__(self):
         return f'{self.name}, количество продуктов: {len(self)} шт.'
@@ -100,7 +95,7 @@ class Category(AbstractCategory, Mixin):
         return self.__products
 
 
-class Product(AbstractProduct, Mixin):
+class Product(Mixin, AbstractProduct):
     """Этот класс соответствует товарам"""
     name: str
     description: str
@@ -114,10 +109,9 @@ class Product(AbstractProduct, Mixin):
         self.price = price
         self.quantity = quantity
         self.color = color
-        super().__init__()
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self.name}, {self.description}, {self.price}, {self.quantity})'
+        return super().__repr__()
 
     def __str__(self):
         return f'{self.name}, {self.price} руб. Остаток: {self.quantity} шт.'
@@ -188,7 +182,7 @@ class CategoryItems:
             raise StopIteration
 
 
-class Smartphone(Product, Mixin):
+class Smartphone(Product):
     """Класс Смартфоны, наследуемый от класса Продукт"""
     performance: float  # производительность, Гц
     model: str  # модель
@@ -202,7 +196,7 @@ class Smartphone(Product, Mixin):
         self.color = color
 
 
-class Grass(Product, Mixin):
+class Grass(Product):
     """Класс Газонная трава, наследуемый от класса Продукт"""
     producing_country: str  # страна-производитель
     germination_period: int  # срок прорастания, дней
@@ -214,7 +208,7 @@ class Grass(Product, Mixin):
         self.color = color
 
 
-class Order(AbstractCategory, Mixin):
+class Order(Mixin, AbstractCategory):
     """Класс Заказа. Содержит в себе продукт, количество и стоимость"""
 
     def __init__(self, product):
@@ -222,12 +216,11 @@ class Order(AbstractCategory, Mixin):
             self.product = product
             self.quantity = product.quantity
             self.name = self.product.name
-            super().__init__()
         else:
             raise TypeError('Был передан не Продукт')
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self.product}, {self.name}, {self.quantity}, {self.total_price})'
+        return super().__repr__()
 
     def __str__(self):
         return f'{self.name} в количестве {self.quantity} шт. Итоговая цена: {self.total_price} руб.'
