@@ -1,5 +1,5 @@
 import pytest
-from src.classes import Category, Product, CategoryItems, Smartphone, Grass
+from src.classes import Category, Product, CategoryItems, Smartphone, Grass, Order
 
 
 @pytest.fixture
@@ -106,3 +106,11 @@ def test_adding_some_prod(product_iphone, category_smartphones):
     assert exception_raised == TypeError
     category_smartphones.add_product(Grass('f', 'f', 1, 1, 'ru', 1, 'rgb'))
     assert len(category_smartphones.get_all_products()) == 5
+
+
+def test_order(test_some_products):
+    item = test_some_products[0]
+    order1 = Order(item)
+    assert order1.total_price == 200
+    assert order1.name == 't1'
+    assert order1.quantity == 2
