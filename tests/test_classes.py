@@ -116,13 +116,24 @@ def test_order(test_some_products):
     assert order1.quantity == 2
 
 
-def test_adding_zero_product(product_iphone, category_smartphones):
-    """Тестирование добавления товара с количеством = 0"""
-    my_cat = category_smartphones
-    test_object = product_iphone
-    test_object.quantity = 0  # количество товара равно 0
-    with pytest.raises(ValueError) as error:
-        my_cat.add_product(test_object)  # добавляем продукт в категорию
-    test_object.quantity = -1  # количество товара отрицательное
-    with pytest.raises(ValueError) as error:
-        my_cat.add_product(test_object)  # добавляем продукт в категорию
+# def test_adding_zero_product(product_iphone, category_smartphones):
+#     """Тестирование добавления товара с количеством = 0"""
+#     my_cat = category_smartphones
+#     test_object = product_iphone
+#     test_object.quantity = 0  # количество товара равно 0
+#     with pytest.raises(ValueError) as error:
+#         my_cat.add_product(test_object)  # добавляем продукт в категорию
+#     test_object.quantity = -1  # количество товара отрицательное
+#     with pytest.raises(ValueError) as error:
+#         my_cat.add_product(test_object)  # добавляем продукт в категорию
+
+
+def test_avg_price_no_exception(test_category):
+    """Тестирование расчёта среднего ценника продуктов в категории"""
+    assert round(test_category.count_avg_price()) == 140333
+
+
+def test_avg_for_empty_category():
+    """Тестирование расчёта среднего ценника в пустой категории"""
+    my_empty_cat = Category('test', 'test', [])
+    assert my_empty_cat.count_avg_price() == 0

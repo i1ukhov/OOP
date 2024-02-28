@@ -1,6 +1,16 @@
 from abc import ABC, abstractmethod
 
 
+class ZeroProductQuantityError(Exception):
+    """Класс исключения для нулевого количества товаров"""
+
+    def __init__(self, *args, **kwargs):
+        self.message = args[0] if args else 'Количество товара должно быть больше 0'
+
+    def __str__(self):
+        return self.message
+
+
 class AbstractCategory(ABC):
     """Абстрактный класс для макета Категории и Заказа"""
 
@@ -81,10 +91,17 @@ class Category(Mixin, AbstractCategory):
     def add_product(self, product):
         """Метод добавляет товары в атрибут товаров"""
         if isinstance(product, Product):
-            if product.quantity > 0:
-                self.__products.append(product)
+            try:
+                if product.quantity > 0:
+                    self.__products.append(product)
+                else:
+                    raise ZeroProductQuantityError
+            except ZeroProductQuantityError as err:
+                print(err)
             else:
-                raise ValueError("Количество товара при добавлении должно быть больше нуля")
+                print(f'Товар "{product.name}" успешно добавлен в заказ')
+            finally:
+                print(f'Обработка добавления товара "{product.name}" завершена')
         else:
             raise TypeError("Добавлять можно только Продукт")
 
@@ -96,6 +113,14 @@ class Category(Mixin, AbstractCategory):
     def get_all_products(self):
         """Геттер для продуктов"""
         return self.__products
+
+    def count_avg_price(self):
+        """Метод считает средний ценник всех товаров категории"""
+        try:
+            prods_price = [i.price for i in self.get_all_products()]
+            return sum(prods_price) / len(prods_price)
+        except ZeroDivisionError:
+            return 0
 
 
 class Product(Mixin, AbstractProduct):
@@ -216,9 +241,19 @@ class Order(Mixin, AbstractCategory):
 
     def __init__(self, product):
         if isinstance(product, Product):
-            self.product = product
-            self.quantity = product.quantity
-            self.name = self.product.name
+            try:
+                if product.quantity > 0:
+                    self.product = product
+                    self.quantity = product.quantity
+                    self.name = self.product.name
+                else:
+                    raise ZeroProductQuantityError
+            except ZeroProductQuantityError as e:
+                print(e)
+            else:
+                print(f'Товар "{product.name}" успешно добавлен в заказ')
+            finally:
+                print(f'Обработка добавления товара "{product.name}" завершена')
         else:
             raise TypeError('Был передан не Продукт')
 

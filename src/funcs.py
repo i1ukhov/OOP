@@ -60,21 +60,33 @@ def upload_func():
 # for i in CategoryItems(upload_func()[0][0]):
 #     print(i)
 #
-grass1 = Grass('t1', '-', 100, 2, 'RUS', 12, 'green')
-grass2 = Grass('t2', '-', 50, 4, 'USA', 20, 'greenest green')
-smartphone1 = Smartphone('t1', '-', 10000, 1, 60, '1', 256, 'green')
-smartphone2 = Smartphone('t1', '-', 20000, 5, 120, '1', 512, 'red')
+# grass1 = Grass('t1', '-', 100, 2, 'RUS', 12, 'green')
+# grass2 = Grass('t2', '-', 50, 4, 'USA', 20, 'greenest green')
+# smartphone1 = Smartphone('t1', '-', 10000, 1, 60, '1', 256, 'green')
+# smartphone2 = Smartphone('t1', '-', 20000, 5, 120, '1', 512, 'red')
 
 # print(grass1 + grass2)  # 400
 
-print(Product.__mro__)
-print(Category.__mro__)
-print(Smartphone.__mro__)
-print(Grass.__mro__)
+# print(Product.__mro__)
+# print(Category.__mro__)
+# print(Smartphone.__mro__)
+# print(Grass.__mro__)
+#
+# order1 = Order(grass1)
+# print(order1.total_price)
+# print(order1.name)
+# print(order1.quantity)
+# print(order1.__repr__())
+# print(smartphone1.__repr__())
 
-order1 = Order(grass1)
-print(order1.total_price)
-print(order1.name)
-print(order1.quantity)
-print(order1.__repr__())
-print(smartphone1.__repr__())
+my_cat = upload_func()[0][0]
+my_prod = Product('Тестовый товар', '', 0, 1, 'green')
+my_cat.add_product(my_prod)
+print(my_cat.get_products)
+print(my_cat.count_avg_price())
+
+my_empty_cat = Category('test', 'test', [])
+print(my_empty_cat.count_avg_price())
+
+ord1 = Order(my_prod)
+
