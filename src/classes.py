@@ -81,7 +81,10 @@ class Category(Mixin, AbstractCategory):
     def add_product(self, product):
         """Метод добавляет товары в атрибут товаров"""
         if isinstance(product, Product):
-            self.__products.append(product)
+            if product.quantity > 0:
+                self.__products.append(product)
+            else:
+                raise ValueError("Количество товара при добавлении должно быть больше нуля")
         else:
             raise TypeError("Добавлять можно только Продукт")
 

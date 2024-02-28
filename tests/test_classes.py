@@ -114,3 +114,15 @@ def test_order(test_some_products):
     assert order1.total_price == 200
     assert order1.name == 't1'
     assert order1.quantity == 2
+
+
+def test_adding_zero_product(product_iphone, category_smartphones):
+    """Тестирование добавления товара с количеством = 0"""
+    my_cat = category_smartphones
+    test_object = product_iphone
+    test_object.quantity = 0  # количество товара равно 0
+    with pytest.raises(ValueError) as error:
+        my_cat.add_product(test_object)  # добавляем продукт в категорию
+    test_object.quantity = -1  # количество товара отрицательное
+    with pytest.raises(ValueError) as error:
+        my_cat.add_product(test_object)  # добавляем продукт в категорию
